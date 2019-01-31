@@ -7,7 +7,7 @@
     <div class="container mt-5">
       <form @submit.prevent="addWeight()">
         <div class="form-group row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 has-success">
             <label for="name">Name:</label>
             <input v-model="inputName" class="form-control" type="text" id="name" required/>
           </div>
@@ -32,23 +32,34 @@ export default {
     return {
       // users array, newWeight, 
       users: [
-        {user: 'Jake', weight: [],},
-        // {name: 'Andrea', weight: [],}
+        { user: 'Jake', weight: [] },
+        { user: 'Andrea', weight: [] },
       ],
       newWeight: 0,
       inputName: '',
-    }
+      wrongName: false,
+    };
   },
   methods: {
     // push the user name with new weight input into the users array as an // object
     addWeight() {
-      if (this.inputName == 'Jake') {
+      // Checks which user to add the weight to
+      if (this.inputName === 'Jake') {
         this.users[0].weight.push(this.newWeight);
+        this.wrongName = false;
+        this.inputName = '';
+        this.newWeight = 0;
+      } else if (this.inputName === 'Andrea') {
+        this.users[1].weight.push(this.newWeight);
+        this.wrongName = false;
+        this.inputName = '';
+        this.newWeight = 0;
       } else {
-        console.log('Hello World')
+        wrongName = true;
+        const err = new Error('Name does not match');
       }
     },
-  }
+  },
 };
 </script>
 
