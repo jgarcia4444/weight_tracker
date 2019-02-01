@@ -20,14 +20,18 @@
         <button class="btn btn-primary" type="submit">Add weight</button>
       </form>
     </div>
+    <Graph1 />
   </div>
 </template>
 
 <script>
-
+import Graph1 from './components/createGraph.vue';
 
 export default {
   name: 'app',
+  components: {
+    Graph1
+  },
   data() {
     return {
       // users array, newWeight, 
@@ -40,6 +44,24 @@ export default {
       wrongName: false,
     };
   },
+
+  // watch the users array for changes
+  watch: {
+    users: {
+      handler() {
+        localStorage.users = JSON.stringify(this.users);
+      },
+      deep: true
+    }
+  },
+
+  // load the data from localStorage
+  mounted() {
+    if (localStorage.users) {
+      this.users = JSON.parse(localStorage.users);
+    };
+  },
+
   methods: {
     // push the user name with new weight input into the users array as an // object
     addWeight() {
@@ -55,8 +77,9 @@ export default {
         this.inputName = '';
         this.newWeight = 0;
       } else {
-        wrongName = true;
+        this.wrongName = true;
         const err = new Error('Name does not match');
+        throw(err);
       }
     },
   },
